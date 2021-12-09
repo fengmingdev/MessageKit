@@ -31,10 +31,11 @@ open class AudioMessageCell: MessageContentCell {
     /// The play button view to display on audio messages.
     public lazy var playButton: UIButton = {
         let playButton = UIButton(type: .custom)
+        playButton.imageView?.animationDuration = 1
         let playImage = UIImage.messageKitImageWith(type: .play)
-        let pauseImage = UIImage.messageKitImageWith(type: .pause)
-        playButton.setImage(playImage?.withRenderingMode(.alwaysTemplate), for: .normal)
-        playButton.setImage(pauseImage?.withRenderingMode(.alwaysTemplate), for: .selected)
+//        let pauseImage = UIImage.messageKitImageWith(type: .pause)
+//        playButton.setImage(playImage?.withRenderingMode(.alwaysTemplate), for: .normal)
+//        playButton.setImage(pauseImage?.withRenderingMode(.alwaysTemplate), for: .selected)
         return playButton
     }()
 
@@ -118,9 +119,21 @@ open class AudioMessageCell: MessageContentCell {
         if !dataSource.isFromCurrentSender(message: message) {
             playButtonLeftConstraint?.constant = 12
             durationLabelRightConstraint?.constant = -8
+            playButton.setImage("SenderVoiceNodePlaying".image, for: .normal)
+            playButton.imageView!.animationImages = [
+                "SenderVoiceNodePlaying001".image!,
+                "SenderVoiceNodePlaying002".image!,
+                "SenderVoiceNodePlaying003".image!
+            ]
         } else {
             playButtonLeftConstraint?.constant = 5
             durationLabelRightConstraint?.constant = -15
+            playButton.setImage("ReceiverVoiceNodePlaying".image, for: .normal)
+            playButton.imageView!.animationImages = [
+                "ReceiverVoiceNodePlaying001".image!,
+                "ReceiverVoiceNodePlaying002".image!,
+                "ReceiverVoiceNodePlaying003".image!
+            ]
         }
 
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
