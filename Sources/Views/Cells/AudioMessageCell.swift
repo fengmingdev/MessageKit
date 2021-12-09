@@ -66,10 +66,10 @@ open class AudioMessageCell: MessageContentCell {
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         playButton.constraint(equalTo: CGSize(width: 25, height: 25))
-        playButton.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5)
+//        playButton.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5)
         activityIndicatorView.addConstraints(centerY: playButton.centerYAnchor, centerX: playButton.centerXAnchor)
-        durationLabel.addConstraints(right: messageContainerView.rightAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 15)
-        progressView.addConstraints(left: playButton.rightAnchor, right: durationLabel.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5, rightConstant: 5)
+//        durationLabel.addConstraints(right: messageContainerView.rightAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 15)
+//        progressView.addConstraints(left: playButton.rightAnchor, right: durationLabel.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5, rightConstant: 5)
     }
 
     open override func setupSubviews() {
@@ -119,20 +119,26 @@ open class AudioMessageCell: MessageContentCell {
         if !dataSource.isFromCurrentSender(message: message) {
             playButtonLeftConstraint?.constant = 12
             durationLabelRightConstraint?.constant = -8
-            playButton.setImage(UIImage(named: "SenderVoiceNodePlaying"), for: .normal)
-            playButton.imageView!.animationImages = [
-                UIImage(named: "SenderVoiceNodePlaying001")!,
-                UIImage(named: "SenderVoiceNodePlaying001")!,
-                UIImage(named: "SenderVoiceNodePlaying003")!
-            ]
-        } else {
-            playButtonLeftConstraint?.constant = 5
-            durationLabelRightConstraint?.constant = -15
+            playButton.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5)
+            durationLabel.addConstraints(right: messageContainerView.rightAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 15)
+            
             playButton.setImage(UIImage(named: "ReceiverVoiceNodePlaying"), for: .normal)
             playButton.imageView!.animationImages = [
                 UIImage(named: "ReceiverVoiceNodePlaying001")!,
                 UIImage(named: "ReceiverVoiceNodePlaying002")!,
                 UIImage(named: "ReceiverVoiceNodePlaying003")!
+            ]
+        } else {
+            playButtonLeftConstraint?.constant = 5
+            durationLabelRightConstraint?.constant = -15
+            playButton.addConstraints(right: messageContainerView.rightAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 5)
+            durationLabel.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 15)
+            progressView.addConstraints(left: durationLabel.rightAnchor, right: playButton.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5, rightConstant: 5)
+            playButton.setImage(UIImage(named: "SenderVoiceNodePlaying"), for: .normal)
+            playButton.imageView!.animationImages = [
+                UIImage(named: "SenderVoiceNodePlaying001")!,
+                UIImage(named: "SenderVoiceNodePlaying001")!,
+                UIImage(named: "SenderVoiceNodePlaying003")!
             ]
         }
 
