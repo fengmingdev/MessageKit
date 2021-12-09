@@ -119,20 +119,20 @@ open class AudioMessageCell: MessageContentCell {
         if !dataSource.isFromCurrentSender(message: message) {
             playButtonLeftConstraint?.constant = 12
             durationLabelRightConstraint?.constant = -8
-            playButton.setImage("SenderVoiceNodePlaying".image, for: .normal)
+            playButton.setImage(UIImage(named: "SenderVoiceNodePlaying"), for: .normal)
             playButton.imageView!.animationImages = [
-                "SenderVoiceNodePlaying001".image!,
-                "SenderVoiceNodePlaying002".image!,
-                "SenderVoiceNodePlaying003".image!
+                UIImage(named: "SenderVoiceNodePlaying001")!,
+                UIImage(named: "SenderVoiceNodePlaying001")!,
+                UIImage(named: "SenderVoiceNodePlaying003")!
             ]
         } else {
             playButtonLeftConstraint?.constant = 5
             durationLabelRightConstraint?.constant = -15
-            playButton.setImage("ReceiverVoiceNodePlaying".image, for: .normal)
+            playButton.setImage(UIImage(named: "ReceiverVoiceNodePlaying"), for: .normal)
             playButton.imageView!.animationImages = [
-                "ReceiverVoiceNodePlaying001".image!,
-                "ReceiverVoiceNodePlaying002".image!,
-                "ReceiverVoiceNodePlaying003".image!
+                UIImage(named: "ReceiverVoiceNodePlaying001")!,
+                UIImage(named: "ReceiverVoiceNodePlaying002")!,
+                UIImage(named: "ReceiverVoiceNodePlaying003")!
             ]
         }
 
