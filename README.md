@@ -51,7 +51,7 @@ See [VISION.md](https://github.com/MessageKit/MessageKit/blob/master/VISION.md) 
 
 ```ruby
 # Swift 5.3
-pod 'MessageKit'
+pod 'MessageKit', :git=>'https://github.com/fengmingdev/MessageKit.git'
 ```
 
 > For Swift 5.0 use version 3.3.0
