@@ -29,19 +29,23 @@ open class MediaMessageSizeCalculator: MessageSizeCalculator {
 
     open override func messageContainerSize(for message: MessageType) -> CGSize {
         let maxWidth = messageContainerMaxWidth(for: message)
-        let sizeForMediaItem = { (maxWidth: CGFloat, item: MediaItem) -> CGSize in
-            if maxWidth < item.size.width {
+        let sizeForMediaItem = { (maxWidth: CGFloat, size: CGSize) -> CGSize in
+            if maxWidth < size.width {
                 // Maintain the ratio if width is too great
-                let height = maxWidth * item.size.height / item.size.width
+                let height = maxWidth * size.height / size.width
                 return CGSize(width: maxWidth, height: height)
             }
-            return item.size
+            return size
         }
         switch message.kind {
         case .photo(let item):
-            return sizeForMediaItem(maxWidth, item)
+            return sizeForMediaItem(maxWidth, item.size)
         case .video(let item):
-            return sizeForMediaItem(maxWidth, item)
+            return sizeForMediaItem(maxWidth, item.size)
+        case .wallet(let item):
+            return sizeForMediaItem(maxWidth, item.size)
+        case .gift(let item):
+            return sizeForMediaItem(maxWidth, item.size)
         default:
             fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
         }
