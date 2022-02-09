@@ -190,7 +190,6 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
         panGesture.delegate = nil
         self.panGesture = nil
         messagesCollectionView.removeGestureRecognizer(panGesture)
-        messagesCollectionView.clipsToBounds = true
     }
 
     @objc
@@ -236,13 +235,12 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     }
 
     private func setupSubviews() {
-        messagesCollectionView.backgroundColor = .clear
         view.addSubview(messagesCollectionView)
     }
 
     private func setupConstraints() {
         messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let navBarHeight = navigationController?.navigationBar.frame.height ?? 0
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
@@ -519,9 +517,9 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
     }
 
     // MARK: - UIGestureRecognizerDelegate
-
-    /// check pan gesture direction
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+           
+    /// Check Pan Gesture Direction:
+    open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else {
             return false
         }
