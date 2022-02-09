@@ -85,7 +85,7 @@ open class TextMessageCell: MessageContentCell {
                 if let font = messageLabel.messageLabelFont {
                     messageLabel.font = font
                 }
-            case .attributedText(let text):
+            case .attributedText(let text), .system(let text):
                 messageLabel.attributedText = text
             default:
                 break
