@@ -161,7 +161,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
             break
         case .natural:
             switch message.kind {
-            case .system:
+            case .system, .gift:
                 position.horizontal = .natural
             default:
                 position.horizontal = isFromCurrentSender ? .cellTrailing : .cellLeading
