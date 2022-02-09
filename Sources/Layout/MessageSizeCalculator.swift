@@ -35,7 +35,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
     public var incomingAvatarSize = CGSize(width: 30, height: 30)
     public var outgoingAvatarSize = CGSize(width: 30, height: 30)
-    public var systemMessageAvatarSize = CGSize(width: 30, height: 30)
+    public var systemAvatarSize = CGSize.zero
 
     public var incomingAvatarPosition = AvatarPosition(vertical: .cellBottom)
     public var outgoingAvatarPosition = AvatarPosition(vertical: .cellBottom)
@@ -160,7 +160,12 @@ open class MessageSizeCalculator: CellSizeCalculator {
         case .cellTrailing, .cellLeading:
             break
         case .natural:
-            position.horizontal = isFromCurrentSender ? .cellTrailing : .cellLeading
+            switch message.kind {
+            case .system:
+                position.horizontal = .natural
+            default:
+                position.horizontal = isFromCurrentSender ? .cellTrailing : .cellLeading
+            }
         }
         return position
     }
@@ -168,7 +173,12 @@ open class MessageSizeCalculator: CellSizeCalculator {
     open func avatarSize(for message: MessageType) -> CGSize {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
-        return isFromCurrentSender ? outgoingAvatarSize : incomingAvatarSize
+        switch message.kind {
+        case .system, .gift:
+            return systemAvatarSize
+        default:
+            return isFromCurrentSender ? outgoingAvatarSize : incomingAvatarSize
+        }
     }
 
     // MARK: - Top cell Label
@@ -267,7 +277,12 @@ open class MessageSizeCalculator: CellSizeCalculator {
     open func messageContainerPadding(for message: MessageType) -> UIEdgeInsets {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
-        return isFromCurrentSender ? outgoingMessagePadding : incomingMessagePadding
+        switch message.kind {
+        case .system, .gift:
+            return systemMessagePadding
+        default:
+            return isFromCurrentSender ? outgoingMessagePadding : incomingMessagePadding
+        }
     }
 
     open func messageContainerSize(for message: MessageType) -> CGSize {

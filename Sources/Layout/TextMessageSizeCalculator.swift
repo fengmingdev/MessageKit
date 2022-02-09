@@ -29,13 +29,20 @@ open class TextMessageSizeCalculator: MessageSizeCalculator {
 
     public var incomingMessageLabelInsets = UIEdgeInsets(top: 7, left: 18, bottom: 7, right: 14)
     public var outgoingMessageLabelInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 18)
-
+    public var systemMessageLabelInsets = UIEdgeInsets(top: 7, left: 18, bottom: 7, right: 18)
+    
     public var messageLabelFont = UIFont.preferredFont(forTextStyle: .body)
 
     internal func messageLabelInsets(for message: MessageType) -> UIEdgeInsets {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
-        return isFromCurrentSender ? outgoingMessageLabelInsets : incomingMessageLabelInsets
+        let textMessageKind = message.kind.textMessageKind
+        switch textMessageKind {
+        case .system:
+            return systemMessageLabelInsets
+        default:
+            return isFromCurrentSender ? outgoingMessageLabelInsets : incomingMessageLabelInsets
+        }
     }
 
     open override func messageContainerMaxWidth(for message: MessageType) -> CGFloat {
