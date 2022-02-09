@@ -60,6 +60,15 @@ public enum MessageKind {
     /// A link preview message.
     case linkPreview(LinkItem)
 
+    /// A system  message.
+    case system(NSAttributedString)
+    
+    /// A wallet  message.
+    case wallet(WalletItem)
+    
+    /// A gift  message.
+    case gift(GiftItem)
+    
     /// A custom message.
     /// - Note: Using this case requires that you implement the following methods and handle this case:
     ///   - MessagesDataSource: customCell(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UICollectionViewCell

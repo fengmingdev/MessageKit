@@ -349,7 +349,7 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
         let message = messagesDataSource.messageForItem(at: indexPath, in: messagesCollectionView)
 
         switch message.kind {
-        case .text, .attributedText, .emoji:
+        case .text, .attributedText, .emoji, .system:
             if let cell = messagesDataSource.textCell(for: message, at: indexPath, in: messagesCollectionView) {
                 return cell
             } else {
@@ -395,6 +395,14 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
             return cell
         case .custom:
             return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
+        case .wallet:
+            let cell = messagesCollectionView.dequeueReusableCell(WalletMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+        case .gift:
+            let cell = messagesCollectionView.dequeueReusableCell(GiftMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
         }
     }
 

@@ -166,6 +166,7 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }()
     lazy open var photoMessageSizeCalculator = MediaMessageSizeCalculator(layout: self)
     lazy open var videoMessageSizeCalculator = MediaMessageSizeCalculator(layout: self)
+
     lazy open var locationMessageSizeCalculator = LocationMessageSizeCalculator(layout: self)
     lazy open var audioMessageSizeCalculator = AudioMessageSizeCalculator(layout: self)
     lazy open var contactMessageSizeCalculator = ContactMessageSizeCalculator(layout: self)
@@ -185,11 +186,11 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
         switch message.kind {
         case .text:
             return messagesLayoutDelegate.textCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView) ?? textMessageSizeCalculator
-        case .attributedText:
+        case .attributedText, .system:
             return messagesLayoutDelegate.attributedTextCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView) ??  attributedTextMessageSizeCalculator
         case .emoji:
             return messagesLayoutDelegate.emojiCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView) ??  emojiMessageSizeCalculator
-        case .photo:
+        case .photo, .wallet, .gift:
             return messagesLayoutDelegate.photoCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView) ??  photoMessageSizeCalculator
         case .video:
             return messagesLayoutDelegate.videoCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView) ??  videoMessageSizeCalculator

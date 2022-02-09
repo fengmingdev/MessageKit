@@ -35,6 +35,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
     public var incomingAvatarSize = CGSize(width: 30, height: 30)
     public var outgoingAvatarSize = CGSize(width: 30, height: 30)
+    public var systemMessageAvatarSize = CGSize(width: 30, height: 30)
 
     public var incomingAvatarPosition = AvatarPosition(vertical: .cellBottom)
     public var outgoingAvatarPosition = AvatarPosition(vertical: .cellBottom)
@@ -43,7 +44,8 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
     public var incomingMessagePadding = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 30)
     public var outgoingMessagePadding = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 4)
-
+    public var systemMessagePadding = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+    
     public var incomingCellTopLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
     public var outgoingCellTopLabelAlignment = LabelAlignment(textAlignment: .center, textInsets: .zero)
     
