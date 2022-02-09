@@ -84,6 +84,7 @@ open class WalletMessageCell: MessageContentCell {
             operateImageView.image = mediaItem.operateImage ?? mediaItem.placeholderImage
             titleLabel.text = mediaItem.title
             titleLabel.textColor = UIColor(red: 0.96, green: 0.88, blue: 0.56,alpha:1)
+            imageMaskView.isHidden = !mediaItem.isMaskShow
             setupConstraints(mediaItem)
         default:
             break
