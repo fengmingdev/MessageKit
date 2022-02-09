@@ -29,7 +29,7 @@ internal extension MessageKind {
         switch self {
         case .linkPreview(let linkItem):
             return linkItem.textKind
-        case .text, .emoji, .attributedText:
+        case .text, .emoji, .attributedText, .system:
             return self
         default:
             fatalError("textMessageKind not supported for messageKind: \(self)")

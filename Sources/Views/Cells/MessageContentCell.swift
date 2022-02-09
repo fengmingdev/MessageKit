@@ -215,7 +215,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .cellTrailing:
             origin.x = attributes.frame.width - attributes.avatarSize.width - padding
         case .natural:
-            fatalError(MessageKitError.avatarPositionUnresolved)
+            origin.x = (attributes.frame.width - attributes.avatarSize.width - padding)/2
         }
 
         switch attributes.avatarPosition.vertical {
@@ -267,7 +267,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .cellTrailing:
             origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes.messageContainerPadding.right - avatarPadding
         case .natural:
-            fatalError(MessageKitError.avatarPositionUnresolved)
+            origin.x = (attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes.messageContainerPadding.right - avatarPadding)/2
         }
 
         messageContainerView.frame = CGRect(origin: origin, size: attributes.messageContainerSize)
@@ -347,7 +347,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         case .cellTrailing:
             origin.x = messageContainerView.frame.minX - attributes.accessoryViewPadding.right - attributes.accessoryViewSize.width
         case .natural:
-            fatalError(MessageKitError.avatarPositionUnresolved)
+            origin.x = (messageContainerView.frame.minX - attributes.accessoryViewPadding.right - attributes.accessoryViewSize.width)/2
         }
 
         accessoryView.frame = CGRect(origin: origin, size: attributes.accessoryViewSize)
