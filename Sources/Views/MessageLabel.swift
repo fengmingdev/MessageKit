@@ -277,9 +277,10 @@ open class MessageLabel: UILabel {
                 if detector.textCheckingType == .link {
                     mutableAttributedString.removeAttribute(NSAttributedString.Key.link, range: range)
                 }
-
-                let attributes = detectorAttributes(for: detector)
-                mutableAttributedString.addAttributes(attributes, range: range)
+                else {
+                    let attributes = detectorAttributes(for: detector)
+                    mutableAttributedString.addAttributes(attributes, range: range)
+                }
             }
 
             let updatedString = NSAttributedString(attributedString: mutableAttributedString)
