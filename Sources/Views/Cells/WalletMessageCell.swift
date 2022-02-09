@@ -26,9 +26,11 @@ open class WalletMessageCell: MessageContentCell {
     }()
     
     // 操作
-    open var operateImageView: UIImageView = {
-        let openButtonView = UIImageView()
-        return openButtonView
+    open lazy var operateButtonView: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        return button
     }()
     
     // 遮罩
@@ -53,22 +55,22 @@ open class WalletMessageCell: MessageContentCell {
         titleLabel.center = CGPoint(x: width/2, y: height/2 - 35)
         titleLabel.textAlignment = .center
         
-        operateImageView.frame = CGRect(x: 0, y: 0, width: 45, height: 45)
-        operateImageView.center = CGPoint(x: width/2, y: height/2 + 45)
+        operateButtonView.frame = CGRect(x: 0, y: 0, width: 45, height: 45)
+        operateButtonView.center = CGPoint(x: width/2, y: height/2 + 45)
     }
 
     open override func setupSubviews() {
         super.setupSubviews()
         messageContainerView.addSubview(imageView)
         messageContainerView.addSubview(titleLabel)
-        messageContainerView.addSubview(operateImageView)
+        messageContainerView.addSubview(operateButtonView)
         messageContainerView.addSubview(imageMaskView)
     }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
         self.imageView.image = nil
-        self.operateImageView.image = nil
+        self.operateButtonView.imageView?.image = nil
     }
 
     open override func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
@@ -81,7 +83,7 @@ open class WalletMessageCell: MessageContentCell {
         switch message.kind {
         case .wallet(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-            operateImageView.image = mediaItem.operateImage ?? mediaItem.placeholderImage
+            operateButtonView.setImage(mediaItem.operateImage ?? mediaItem.placeholderImage, for: .normal)
             titleLabel.text = mediaItem.title
             titleLabel.textColor = UIColor(red: 0.96, green: 0.88, blue: 0.56,alpha:1)
             imageMaskView.isHidden = !mediaItem.isMaskShow

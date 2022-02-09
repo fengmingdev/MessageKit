@@ -91,6 +91,7 @@ open class MediaMessageCell: MessageContentCell {
             return
         }
         delegate?.didTapImage(in: self)
+        
     }
     
 }

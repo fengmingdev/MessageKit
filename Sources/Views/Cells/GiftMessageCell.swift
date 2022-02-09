@@ -35,9 +35,11 @@ open class GiftMessageCell: MessageContentCell {
     }()
     
     // 操作
-    open var operateImageView: UIImageView = {
-        let openButtonView = UIImageView()
-        return openButtonView
+    open lazy var operateButtonView: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        return button
     }()
     
  
@@ -51,8 +53,8 @@ open class GiftMessageCell: MessageContentCell {
         imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 94)
         imageView.center = CGPoint(x: width/2, y: height/2)
         
-        operateImageView.frame = CGRect(x: 0, y: 0, width: 39, height: 69)
-        operateImageView.center = CGPoint(x: width/2, y: height/2)
+        operateButtonView.frame = CGRect(x: 0, y: 0, width: 39, height: 69)
+        operateButtonView.center = CGPoint(x: width/2, y: height/2)
         
         titleLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
         
@@ -70,14 +72,14 @@ open class GiftMessageCell: MessageContentCell {
         messageContainerView.addSubview(imageView)
         messageContainerView.addSubview(titleLabel)
         messageContainerView.addSubview(descriptionLabel)
-        messageContainerView.addSubview(operateImageView)
+        messageContainerView.addSubview(operateButtonView)
         
     }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
         self.imageView.image = nil
-        self.operateImageView.image = nil
+        self.operateButtonView.imageView?.image = nil
     }
 
     open override func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
@@ -90,8 +92,7 @@ open class GiftMessageCell: MessageContentCell {
         switch message.kind {
         case .gift(let mediaItem):
             imageView.image = mediaItem.image
-            operateImageView.image = mediaItem.operateImage ?? mediaItem.placeholderImage
-  
+            operateButtonView.setImage(mediaItem.operateImage ?? mediaItem.placeholderImage, for: .normal)
             titleLabel.text = mediaItem.title
             titleLabel.textColor = .white
             

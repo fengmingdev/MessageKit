@@ -33,9 +33,6 @@ open class AudioMessageCell: MessageContentCell {
         let playButton = UIButton(type: .custom)
         playButton.imageView?.animationDuration = 1
         let playImage = UIImage.messageKitImageWith(type: .play)
-//        let pauseImage = UIImage.messageKitImageWith(type: .pause)
-//        playButton.setImage(playImage?.withRenderingMode(.alwaysTemplate), for: .normal)
-//        playButton.setImage(pauseImage?.withRenderingMode(.alwaysTemplate), for: .selected)
         return playButton
     }()
 
@@ -66,10 +63,7 @@ open class AudioMessageCell: MessageContentCell {
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         playButton.constraint(equalTo: CGSize(width: 25, height: 25))
-//        playButton.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5)
         activityIndicatorView.addConstraints(centerY: playButton.centerYAnchor, centerX: playButton.centerXAnchor)
-//        durationLabel.addConstraints(right: messageContainerView.rightAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 15)
-//        progressView.addConstraints(left: playButton.rightAnchor, right: durationLabel.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5, rightConstant: 5)
     }
 
     open override func setupSubviews() {

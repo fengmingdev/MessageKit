@@ -41,5 +41,9 @@ open class MessageCollectionViewCell: UICollectionViewCell {
     open func handleTapGesture(_ gesture: UIGestureRecognizer) {
         // Should be overridden
     }
-
+    
+    /// Handle tap gesture on contentView and its subviews.
+    func handleLongTapGesture(_ gesture: UIGestureRecognizer) {
+        // Should be overridden
+    }
 }
