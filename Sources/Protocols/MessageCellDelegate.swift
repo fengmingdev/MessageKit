@@ -28,6 +28,8 @@ import UIKit
 /// A protocol used by `MessageContentCell` subclasses to detect taps in the cell's subviews.
 public protocol MessageCellDelegate: MessageLabelDelegate {
     
+    func didTapBackground()
+    
     /// Triggered when a tap occurs in the background of the cell.
     ///
     /// - Parameters:
@@ -181,9 +183,13 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
 }
 
 public extension MessageCellDelegate {
-
+    
+    func didTapBackground() {}
+    
     func didTapBackground(in cell: MessageCollectionViewCell) {}
-
+    
+    func didTapBlankLocation(in cell: MessageCollectionViewCell) {}
+    
     func didTapMessage(in cell: MessageCollectionViewCell) {}
 
     func didTapAvatar(in cell: MessageCollectionViewCell) {}
