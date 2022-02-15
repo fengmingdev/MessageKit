@@ -25,6 +25,14 @@
 import Foundation
 import UIKit
 
+public protocol MessagesCollectionViewDelegate: AnyObject {
+    func didTapBackground()
+    func didLongTapBackground()
+}
+extension MessagesCollectionViewDelegate {
+    func didTapBackground(){}
+    func didLongTapBackground(){}
+}
 open class MessagesCollectionView: UICollectionView {
 
     // MARK: - Properties
@@ -37,6 +45,8 @@ open class MessagesCollectionView: UICollectionView {
 
     open weak var messageCellDelegate: MessageCellDelegate?
 
+    open weak var tapDelegate: MessagesCollectionViewDelegate?
+    
     open var isTypingIndicatorHidden: Bool {
         return messagesCollectionViewFlowLayout.isTypingIndicatorViewHidden
     }
@@ -103,7 +113,7 @@ open class MessagesCollectionView: UICollectionView {
     @objc
     open func handleTapGesture(_ gesture: UIGestureRecognizer) {
         guard gesture.state == .ended else { return }
-        messageCellDelegate?.didTapBackground()
+        tapDelegate?.didTapBackground()
         let touchLocation = gesture.location(in: self)
         guard let indexPath = indexPathForItem(at: touchLocation) else { return }
         
@@ -113,6 +123,7 @@ open class MessagesCollectionView: UICollectionView {
     
     @objc
     func handleLongTapGesture(_ gesture: UIGestureRecognizer) {
+        tapDelegate?.didLongTapBackground()
         let touchLocation = gesture.location(in: self)
         guard let indexPath = indexPathForItem(at: touchLocation) else { return }
 
