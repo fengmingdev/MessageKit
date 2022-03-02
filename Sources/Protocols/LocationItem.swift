@@ -32,6 +32,9 @@ public protocol LocationItem {
     /// The location.
     var location: CLLocation { get }
 
+    /// title description conten
+    var content: String { get }
+    
     /// The size of the location item.
     var size: CGSize { get }
 

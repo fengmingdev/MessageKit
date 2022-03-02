@@ -36,11 +36,22 @@ open class LocationMessageCell: MessageContentCell {
     
     private weak var snapShotter: MKMapSnapshotter?
 
+    lazy var titleLabel: InsetLabel = {
+        let label = InsetLabel()
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = UIColor(red: 51 / 255.0, green: 51 / 255.0, blue: 51 / 255.0, alpha: 1)
+        label.backgroundColor = .white
+        label.textInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        return label
+    }()
+    
     open override func setupSubviews() {
         super.setupSubviews()
         imageView.contentMode = .scaleAspectFill
         messageContainerView.addSubview(imageView)
         messageContainerView.addSubview(activityIndicator)
+        messageContainerView.addSubview(titleLabel)
         setupConstraints()
     }
 
@@ -48,6 +59,7 @@ open class LocationMessageCell: MessageContentCell {
     open func setupConstraints() {
         imageView.fillSuperview()
         activityIndicator.centerInSuperview()
+        
     }
     
     open override func prepareForReuse() {
@@ -65,14 +77,16 @@ open class LocationMessageCell: MessageContentCell {
         let animationBlock = displayDelegate.animationBlockForLocation(message: message, at: indexPath, in: messagesCollectionView)
 
         guard case let .location(locationItem) = message.kind else { fatalError("") }
-
+        
+        titleLabel.addConstraints(imageView.topAnchor, left: imageView.leftAnchor, widthConstant: locationItem.size.width, heightConstant: 50)
+        titleLabel.text = locationItem.content
         activityIndicator.startAnimating()
 
         let snapshotOptions = MKMapSnapshotter.Options()
         snapshotOptions.region = MKCoordinateRegion(center: locationItem.location.coordinate, span: options.span)
         snapshotOptions.showsBuildings = options.showsBuildings
         snapshotOptions.showsPointsOfInterest = options.showsPointsOfInterest
-
+        self.activityIndicator.stopAnimating()
         let snapShotter = MKMapSnapshotter(options: snapshotOptions)
         self.snapShotter = snapShotter
         snapShotter.start { (snapshot, error) in
@@ -89,7 +103,7 @@ open class LocationMessageCell: MessageContentCell {
                 return
             }
 
-            UIGraphicsBeginImageContextWithOptions(snapshotOptions.size, true, 0)
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: snapshotOptions.size.width, height: snapshotOptions.size.height - 66), true, 0)
 
             snapshot.image.draw(at: .zero)
 

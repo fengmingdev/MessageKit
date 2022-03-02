@@ -155,7 +155,7 @@ final class MessagesViewControllerTests: XCTestCase {
     func testCellForItemWithLocationData_returnsLocationMessageCell() {
         let messagesDataSource = MockMessagesDataSource()
         sut.messagesCollectionView.messagesDataSource = messagesDataSource
-        messagesDataSource.messages.append(MockMessage(location: CLLocation(latitude: 60.0, longitude: 70.0),
+        messagesDataSource.messages.append(MockMessage(location: CLLocation(latitude: 60.0, longitude: 70.0), content: "testing",
                                                        user: messagesDataSource.senders[0],
                                                        messageId: "test_id"))
 

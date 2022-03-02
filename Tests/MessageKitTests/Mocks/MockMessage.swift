@@ -29,12 +29,15 @@ import AVFoundation
 @testable import MessageKit
 
 struct MockLocationItem: LocationItem {
-
+    
+    var content: String
+    
     var location: CLLocation
     var size: CGSize
 
-    init(location: CLLocation) {
+    init(location: CLLocation, content: String) {
         self.location = location
+        self.content = content
         self.size = CGSize(width: 240, height: 240)
     }
 
@@ -113,8 +116,8 @@ struct MockMessage: MessageType {
         self.init(kind: .video(mediaItem), user: user, messageId: messageId)
     }
 
-    init(location: CLLocation, user: MockUser, messageId: String) {
-        let locationItem = MockLocationItem(location: location)
+    init(location: CLLocation, content: String, user: MockUser, messageId: String) {
+        let locationItem = MockLocationItem(location: location, content: content)
         self.init(kind: .location(locationItem), user: user, messageId: messageId)
     }
 
