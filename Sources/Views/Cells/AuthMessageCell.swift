@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by fengming on 2022/3/9.
 //
@@ -43,7 +43,7 @@ open class AuthMessageCell: MessageContentCell {
         
         titleLabel.addConstraints(messageContainerView.topAnchor, left: messageContainerView.leftAnchor, right: messageContainerView.rightAnchor, topConstant: 20, leftConstant: 5, rightConstant: 5)
         
-        descriptionLabel.addConstraints(left: messageContainerView.leftAnchor, bottom: messageContainerView.bottomAnchor, right: messageContainerView.rightAnchor, leftConstant: 5, rightConstant: 5)
+        descriptionLabel.addConstraints(left: messageContainerView.leftAnchor, bottom: messageContainerView.bottomAnchor, right: messageContainerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 5)
     }
 
     open override func setupSubviews() {
