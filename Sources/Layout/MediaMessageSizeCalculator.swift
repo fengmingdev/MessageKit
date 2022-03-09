@@ -46,6 +46,8 @@ open class MediaMessageSizeCalculator: MessageSizeCalculator {
             return sizeForMediaItem(maxWidth, item.size)
         case .gift(let item):
             return sizeForMediaItem(maxWidth, item.size)
+        case .auth(let item):
+            return sizeForMediaItem(maxWidth, item.size)
         default:
             fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
         }
