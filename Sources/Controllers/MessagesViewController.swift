@@ -393,16 +393,24 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIGestureRecogni
             let cell = messagesCollectionView.dequeueReusableCell(LinkPreviewMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
-        case .custom:
-            return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
+            
         case .wallet:
             let cell = messagesCollectionView.dequeueReusableCell(WalletMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
+            
         case .gift:
             let cell = messagesCollectionView.dequeueReusableCell(GiftMessageCell.self, for: indexPath)
             cell.configure(with: message, at: indexPath, and: messagesCollectionView)
             return cell
+            
+        case .auth:
+            let cell = messagesCollectionView.dequeueReusableCell(AuthMessageCell.self, for: indexPath)
+            cell.configure(with: message, at: indexPath, and: messagesCollectionView)
+            return cell
+            
+        case .custom:
+            return messagesDataSource.customCell(for: message, at: indexPath, in: messagesCollectionView)
         }
     }
 

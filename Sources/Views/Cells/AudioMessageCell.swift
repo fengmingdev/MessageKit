@@ -41,7 +41,7 @@ open class AudioMessageCell: MessageContentCell {
         let durationLabel = UILabel(frame: CGRect.zero)
         durationLabel.textAlignment = .right
         durationLabel.font = UIFont.systemFont(ofSize: 14)
-        durationLabel.text = "0:00"
+        durationLabel.text = "0"
         return durationLabel
     }()
 
@@ -71,17 +71,15 @@ open class AudioMessageCell: MessageContentCell {
         messageContainerView.addSubview(playButton)
         messageContainerView.addSubview(activityIndicatorView)
         messageContainerView.addSubview(durationLabel)
-        messageContainerView.addSubview(progressView)
         setupConstraints()
     }
 
     open override func prepareForReuse() {
         super.prepareForReuse()
-        progressView.progress = 0
         playButton.isSelected = false
         activityIndicatorView.stopAnimating()
         playButton.isHidden = false
-        durationLabel.text = "0:00"
+        durationLabel.text = "0"
     }
 
     /// Handle tap gesture on contentView and its subviews.
@@ -110,30 +108,31 @@ open class AudioMessageCell: MessageContentCell {
         let playButtonLeftConstraint = messageContainerView.constraints.filter { $0.identifier == "left" }.first
         let durationLabelRightConstraint = messageContainerView.constraints.filter { $0.identifier == "right" }.first
 
-        if !dataSource.isFromCurrentSender(message: message) {
-            playButtonLeftConstraint?.constant = 12
-            durationLabelRightConstraint?.constant = -8
-            playButton.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5)
-            durationLabel.addConstraints(right: messageContainerView.rightAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 15)
-            
-            playButton.setImage(UIImage(named: "ReceiverVoiceNodePlaying"), for: .normal)
-            playButton.imageView!.animationImages = [
-                UIImage(named: "ReceiverVoiceNodePlaying001")!,
-                UIImage(named: "ReceiverVoiceNodePlaying002")!,
-                UIImage(named: "ReceiverVoiceNodePlaying003")!
-            ]
-        } else {
+        if dataSource.isFromCurrentSender(message: message) {
             playButtonLeftConstraint?.constant = 5
             durationLabelRightConstraint?.constant = -15
             playButton.addConstraints(right: messageContainerView.rightAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 5)
-            durationLabel.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 15)
-            progressView.addConstraints(left: durationLabel.rightAnchor, right: playButton.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5, rightConstant: 5)
+            durationLabel.addConstraints(right: playButton.leftAnchor, centerY: messageContainerView.centerYAnchor, rightConstant: 5)
+            
             playButton.setImage(UIImage(named: "SenderVoiceNodePlaying"), for: .normal)
             playButton.imageView!.animationImages = [
                 UIImage(named: "SenderVoiceNodePlaying001")!,
                 UIImage(named: "SenderVoiceNodePlaying001")!,
                 UIImage(named: "SenderVoiceNodePlaying003")!
             ]
+        } else {
+            playButtonLeftConstraint?.constant = 12
+            durationLabelRightConstraint?.constant = -8
+            playButton.addConstraints(left: messageContainerView.leftAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5)
+            durationLabel.addConstraints(left: playButton.rightAnchor, centerY: messageContainerView.centerYAnchor, leftConstant: 5)
+   
+            playButton.setImage(UIImage(named: "ReceiverVoiceNodePlaying"), for: .normal)
+            playButton.imageView!.animationImages = [
+                UIImage(named: "ReceiverVoiceNodePlaying001")!,
+                UIImage(named: "ReceiverVoiceNodePlaying002")!,
+                UIImage(named: "ReceiverVoiceNodePlaying003")!
+            ]
+            
         }
 
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
@@ -143,7 +142,6 @@ open class AudioMessageCell: MessageContentCell {
         let tintColor = displayDelegate.audioTintColor(for: message, at: indexPath, in: messagesCollectionView)
         playButton.imageView?.tintColor = tintColor
         durationLabel.textColor = tintColor
-        progressView.tintColor = tintColor
         
         if case let .audio(audioItem) = message.kind {
             durationLabel.text = displayDelegate.audioProgressTextFormat(audioItem.duration, for: self, in: messagesCollectionView)
