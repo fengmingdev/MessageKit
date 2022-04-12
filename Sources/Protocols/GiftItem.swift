@@ -15,6 +15,9 @@ public protocol GiftItem {
     
     var description: String? { get }
     
+    /// The url where the media is located.
+    var url: URL? { get }
+    
     /// The image.
     var image: UIImage? { get }
 

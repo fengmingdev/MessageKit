@@ -41,9 +41,19 @@ open class AuthMessageCell: MessageContentCell {
     open func setupConstraints() {
         imageView.fillSuperview()
         
-        titleLabel.addConstraints(messageContainerView.topAnchor, left: messageContainerView.leftAnchor, right: messageContainerView.rightAnchor, topConstant: 20, leftConstant: 5, rightConstant: 5)
+        titleLabel.addConstraints(messageContainerView.topAnchor,
+                                  left: imageView.leftAnchor,
+                                  right: imageView.rightAnchor,
+                                  topConstant: 8,
+                                  leftConstant: 8,
+                                  rightConstant: 8)
         
-        descriptionLabel.addConstraints(left: messageContainerView.leftAnchor, bottom: messageContainerView.bottomAnchor, right: messageContainerView.rightAnchor, leftConstant: 5, bottomConstant: 10, rightConstant: 5)
+        descriptionLabel.addConstraints(left: imageView.leftAnchor,
+                                        bottom: imageView.bottomAnchor,
+                                        right: imageView.rightAnchor,
+                                        leftConstant: 8,
+                                        bottomConstant: 8,
+                                        rightConstant: 8)
     }
 
     open override func setupSubviews() {

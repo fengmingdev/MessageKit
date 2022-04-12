@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by fengming on 2022/2/9.
 //
@@ -46,25 +46,30 @@ open class GiftMessageCell: MessageContentCell {
     // MARK: - Methods
 
     /// Responsible for setting up the constraints of the cell's subviews.
-    open func setupConstraints(_ mediaItem: GiftItem) {
-        let width = mediaItem.size.width
-        let height = mediaItem.size.height
+    open func setupConstraints() {
         
-        imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 94)
-        imageView.center = CGPoint(x: width/2, y: height/2)
+        imageView.addConstraints(centerY: self.centerYAnchor,
+                                 centerX: self.centerXAnchor,
+                                 centerYConstant: 0,
+                                 centerXConstant: 0,
+                                 widthConstant: 100,
+                                 heightConstant: 100)
         
-        operateButtonView.frame = CGRect(x: 0, y: 0, width: 39, height: 69)
-        operateButtonView.center = CGPoint(x: width/2, y: height/2)
+        operateButtonView.addConstraints(centerY: self.centerYAnchor,
+                                 centerX: self.centerXAnchor,
+                                 centerYConstant: 0,
+                                 centerXConstant: 0,
+                                 widthConstant: 75,
+                                 heightConstant: 75)
+
+        titleLabel.addConstraints(bottom: imageView.centerYAnchor,
+                                  bottomConstant: 8,
+                                  widthConstant: 80)
+
+        descriptionLabel.addConstraints(imageView.centerYAnchor,
+                                        topConstant: 0,
+                                        widthConstant: 80)
         
-        titleLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
-        
-        descriptionLabel.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
-        
-        titleLabel.center = CGPoint(x: width/2 + 110, y: height/2 - 28)
-        titleLabel.textAlignment = .left
-        
-        descriptionLabel.center = CGPoint(x: width/2 + 110, y: height/2)
-        descriptionLabel.textAlignment = .left
     }
 
     open override func setupSubviews() {
@@ -73,7 +78,7 @@ open class GiftMessageCell: MessageContentCell {
         messageContainerView.addSubview(titleLabel)
         messageContainerView.addSubview(descriptionLabel)
         messageContainerView.addSubview(operateButtonView)
-        
+        setupConstraints()
     }
     
     open override func prepareForReuse() {
@@ -88,7 +93,20 @@ open class GiftMessageCell: MessageContentCell {
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError(MessageKitError.nilMessagesDisplayDelegate)
         }
-
+        guard let dataSource = messagesCollectionView.messagesDataSource else {
+            fatalError(MessageKitError.nilMessagesDataSource)
+        }
+        if dataSource.isFromCurrentSender(message: message) { // outgoing message
+            titleLabel.addConstraints(right: imageView.leftAnchor, rightConstant: 8)
+            descriptionLabel.addConstraints(right: imageView.leftAnchor, rightConstant: 8)
+            titleLabel.textAlignment = .right
+            descriptionLabel.textAlignment = .right
+        } else { // incoming message
+            titleLabel.addConstraints(left: imageView.rightAnchor, leftConstant: 8)
+            descriptionLabel.addConstraints(left: imageView.rightAnchor, leftConstant: 8)
+            titleLabel.textAlignment = .left
+            descriptionLabel.textAlignment = .left
+        }
         switch message.kind {
         case .gift(let mediaItem):
             imageView.image = mediaItem.image
@@ -99,12 +117,11 @@ open class GiftMessageCell: MessageContentCell {
             descriptionLabel.textColor = .white
             descriptionLabel.text = mediaItem.description
             
-            setupConstraints(mediaItem)
         default:
             break
         }
 
-        displayDelegate.configureMediaMessageImageView(imageView, for: message, at: indexPath, in: messagesCollectionView)
+        displayDelegate.configureMediaMessageImageView(operateButtonView.imageView!, for: message, at: indexPath, in: messagesCollectionView)
     }
     
     /// Handle tap gesture on contentView and its subviews.
