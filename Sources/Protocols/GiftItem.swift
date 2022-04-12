@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by fengming on 2022/2/9.
 //
@@ -25,7 +25,7 @@ public protocol GiftItem {
     var placeholderImage: UIImage { get }
     
     /// A operate image for when the image is obtained asychronously.
-    var operateImage: UIImage? { get }
+    var backgroundImage: UIImage? { get }
     
     /// The size of the media item.
     var size: CGSize { get }

@@ -28,35 +28,33 @@ open class GiftMessageCell: MessageContentCell {
     }()
     
     /// The image view display the media content.
-    open var imageView: UIImageView = {
+    open var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
     // 操作
-    open lazy var operateButtonView: UIButton = {
-        let button = UIButton()
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        return button
+    open var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
-    
  
     // MARK: - Methods
 
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         
-        imageView.addConstraints(centerY: self.centerYAnchor,
+        backgroundImageView.addConstraints(centerY: self.centerYAnchor,
                                  centerX: self.centerXAnchor,
                                  centerYConstant: 0,
                                  centerXConstant: 0,
                                  widthConstant: 100,
-                                 heightConstant: 100)
+                                 heightConstant: 94)
         
-        operateButtonView.addConstraints(centerY: self.centerYAnchor,
-                                 centerX: self.centerXAnchor,
+        imageView.addConstraints(centerY: backgroundImageView.centerYAnchor,
+                                 centerX: backgroundImageView.centerXAnchor,
                                  centerYConstant: 0,
                                  centerXConstant: 0,
                                  widthConstant: 75,
@@ -74,17 +72,17 @@ open class GiftMessageCell: MessageContentCell {
 
     open override func setupSubviews() {
         super.setupSubviews()
-        messageContainerView.addSubview(imageView)
+        messageContainerView.addSubview(backgroundImageView)
         messageContainerView.addSubview(titleLabel)
         messageContainerView.addSubview(descriptionLabel)
-        messageContainerView.addSubview(operateButtonView)
+        messageContainerView.addSubview(imageView)
         setupConstraints()
     }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
+        self.backgroundImageView.image = nil
         self.imageView.image = nil
-        self.operateButtonView.imageView?.image = nil
     }
 
     open override func configure(with message: MessageType, at indexPath: IndexPath, and messagesCollectionView: MessagesCollectionView) {
@@ -97,20 +95,24 @@ open class GiftMessageCell: MessageContentCell {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
         if dataSource.isFromCurrentSender(message: message) { // outgoing message
-            titleLabel.addConstraints(right: imageView.leftAnchor, rightConstant: 8)
-            descriptionLabel.addConstraints(right: imageView.leftAnchor, rightConstant: 8)
-            titleLabel.textAlignment = .right
-            descriptionLabel.textAlignment = .right
-        } else { // incoming message
-            titleLabel.addConstraints(left: imageView.rightAnchor, leftConstant: 8)
-            descriptionLabel.addConstraints(left: imageView.rightAnchor, leftConstant: 8)
+            titleLabel.addConstraints(left: imageView.rightAnchor,
+                                      leftConstant: 8)
+            descriptionLabel.addConstraints(left: imageView.rightAnchor,
+                                            leftConstant: 8)
             titleLabel.textAlignment = .left
             descriptionLabel.textAlignment = .left
+        } else { // incoming message
+            titleLabel.addConstraints(right: imageView.leftAnchor,
+                                      rightConstant: 8)
+            descriptionLabel.addConstraints(right: imageView.leftAnchor,
+                                            rightConstant: 8)
+            titleLabel.textAlignment = .right
+            descriptionLabel.textAlignment = .right
         }
         switch message.kind {
         case .gift(let mediaItem):
-            imageView.image = mediaItem.image
-            operateButtonView.setImage(mediaItem.operateImage ?? mediaItem.placeholderImage, for: .normal)
+            backgroundImageView.image = mediaItem.backgroundImage
+            imageView.image = mediaItem.image ?? mediaItem.placeholderImage
             titleLabel.text = mediaItem.title
             titleLabel.textColor = .white
             
@@ -120,15 +122,14 @@ open class GiftMessageCell: MessageContentCell {
         default:
             break
         }
-
-        displayDelegate.configureMediaMessageImageView(operateButtonView.imageView!, for: message, at: indexPath, in: messagesCollectionView)
+        displayDelegate.configureMediaMessageImageView(imageView, for: message, at: indexPath, in: messagesCollectionView)
     }
     
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-        let touchLocation = gesture.location(in: imageView)
+        let touchLocation = gesture.location(in: backgroundImageView)
 
-        guard imageView.frame.contains(touchLocation) else {
+        guard backgroundImageView.frame.contains(touchLocation) else {
             super.handleTapGesture(gesture)
             return
         }
