@@ -95,16 +95,16 @@ open class GiftMessageCell: MessageContentCell {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
         if dataSource.isFromCurrentSender(message: message) { // outgoing message
-            titleLabel.addConstraints(left: imageView.rightAnchor,
+            titleLabel.addConstraints(left: backgroundImageView.rightAnchor,
                                       leftConstant: 8)
-            descriptionLabel.addConstraints(left: imageView.rightAnchor,
+            descriptionLabel.addConstraints(left: backgroundImageView.rightAnchor,
                                             leftConstant: 8)
             titleLabel.textAlignment = .left
             descriptionLabel.textAlignment = .left
         } else { // incoming message
-            titleLabel.addConstraints(right: imageView.leftAnchor,
+            titleLabel.addConstraints(right: backgroundImageView.leftAnchor,
                                       rightConstant: 8)
-            descriptionLabel.addConstraints(right: imageView.leftAnchor,
+            descriptionLabel.addConstraints(right: backgroundImageView.leftAnchor,
                                             rightConstant: 8)
             titleLabel.textAlignment = .right
             descriptionLabel.textAlignment = .right
