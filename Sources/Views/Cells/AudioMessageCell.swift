@@ -50,7 +50,7 @@ open class AudioMessageCell: MessageContentCell {
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         playButton.constraint(equalTo: CGSize(width: 25, height: 25))
-        durationLabel.constraint(equalTo: CGSize(width: 50, height: 25))
+//        durationLabel.addConstraint(messageContainerView.heightAnchor.constraint(equalToConstant: 25))
     }
 
     open override func setupSubviews() {
