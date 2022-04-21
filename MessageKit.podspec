@@ -17,5 +17,4 @@ Pod::Spec.new do |s|
    s.ios.resources = 'Sources/Assets.xcassets'
 
    s.dependency 'InputBarAccessoryView', '~> 5.4.0'
-
 end

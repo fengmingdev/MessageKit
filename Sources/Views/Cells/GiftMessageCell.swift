@@ -10,20 +10,39 @@ import UIKit
 /// A subclass of `MessageContentCell` used to display video and audio messages.
 open class GiftMessageCell: MessageContentCell {
 
-    lazy var titleLabel: InsetLabel = {
+    lazy var titleLabelL: InsetLabel = {
         let label = InsetLabel()
         label.numberOfLines = 0
+        label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = UIColor(red: 0.96, green: 0.88, blue: 0.56,alpha:1)
         return label
     }()
     
-    lazy var descriptionLabel: InsetLabel = {
+    lazy var descriptionLabelL: InsetLabel = {
         let label = InsetLabel()
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 9)
         label.textColor = UIColor(red: 0.96, green: 0.88, blue: 0.56,alpha:1)
-        label.textAlignment = .center
+        label.textAlignment = .right
+        return label
+    }()
+    
+    lazy var titleLabelR: InsetLabel = {
+        let label = InsetLabel()
+        label.numberOfLines = 0
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor(red: 0.96, green: 0.88, blue: 0.56,alpha:1)
+        return label
+    }()
+    
+    lazy var descriptionLabelR: InsetLabel = {
+        let label = InsetLabel()
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 9)
+        label.textColor = UIColor(red: 0.96, green: 0.88, blue: 0.56,alpha:1)
+        label.textAlignment = .left
         return label
     }()
     
@@ -40,7 +59,7 @@ open class GiftMessageCell: MessageContentCell {
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
- 
+    
     // MARK: - Methods
 
     /// Responsible for setting up the constraints of the cell's subviews.
@@ -60,21 +79,38 @@ open class GiftMessageCell: MessageContentCell {
                                  widthConstant: 75,
                                  heightConstant: 75)
 
-        titleLabel.addConstraints(bottom: imageView.centerYAnchor,
-                                  bottomConstant: 8,
-                                  widthConstant: 80)
-
-        descriptionLabel.addConstraints(imageView.centerYAnchor,
-                                        topConstant: 0,
-                                        widthConstant: 80)
+        titleLabelL.addConstraints(bottom: imageView.centerYAnchor,
+                                   right: backgroundImageView.leftAnchor,
+                                   bottomConstant: 8,
+                                   rightConstant: 8,
+                                   widthConstant: 80)
         
+        titleLabelR.addConstraints(left: backgroundImageView.rightAnchor,
+                                   bottom: imageView.centerYAnchor,
+                                   leftConstant: 8,
+                                   bottomConstant: 8,
+                                   widthConstant: 80)
+        
+        descriptionLabelL.addConstraints(imageView.centerYAnchor,
+                                         right: titleLabelL.rightAnchor,
+                                         topConstant: 0,
+                                         rightConstant: 0,
+                                         widthConstant: 80)
+        
+        descriptionLabelR.addConstraints(imageView.centerYAnchor,
+                                         left: titleLabelR.leftAnchor,
+                                         topConstant: 0,
+                                         leftConstant: 0,
+                                         widthConstant: 80)
     }
 
     open override func setupSubviews() {
         super.setupSubviews()
         messageContainerView.addSubview(backgroundImageView)
-        messageContainerView.addSubview(titleLabel)
-        messageContainerView.addSubview(descriptionLabel)
+        messageContainerView.addSubview(titleLabelL)
+        messageContainerView.addSubview(descriptionLabelL)
+        messageContainerView.addSubview(titleLabelR)
+        messageContainerView.addSubview(descriptionLabelR)
         messageContainerView.addSubview(imageView)
         setupConstraints()
     }
@@ -94,30 +130,36 @@ open class GiftMessageCell: MessageContentCell {
         guard let dataSource = messagesCollectionView.messagesDataSource else {
             fatalError(MessageKitError.nilMessagesDataSource)
         }
+
         if dataSource.isFromCurrentSender(message: message) { // outgoing message
-            titleLabel.addConstraints(left: backgroundImageView.rightAnchor,
-                                      leftConstant: 8)
-            descriptionLabel.addConstraints(left: backgroundImageView.rightAnchor,
-                                            leftConstant: 8)
-            titleLabel.textAlignment = .left
-            descriptionLabel.textAlignment = .left
+            titleLabelL.isHidden = true
+            descriptionLabelL.isHidden = true
+            
+            titleLabelR.isHidden = false
+            descriptionLabelR.isHidden = false
         } else { // incoming message
-            titleLabel.addConstraints(right: backgroundImageView.leftAnchor,
-                                      rightConstant: 8)
-            descriptionLabel.addConstraints(right: backgroundImageView.leftAnchor,
-                                            rightConstant: 8)
-            titleLabel.textAlignment = .right
-            descriptionLabel.textAlignment = .right
+            titleLabelR.isHidden = true
+            descriptionLabelR.isHidden = true
+            
+            titleLabelL.isHidden = false
+            descriptionLabelL.isHidden = false
         }
+        self.layoutIfNeeded()
         switch message.kind {
         case .gift(let mediaItem):
             backgroundImageView.image = mediaItem.backgroundImage
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-            titleLabel.text = mediaItem.title
-            titleLabel.textColor = .white
+            titleLabelL.text = mediaItem.title
+            titleLabelL.textColor = .white
             
-            descriptionLabel.textColor = .white
-            descriptionLabel.text = mediaItem.description
+            descriptionLabelL.textColor = .white
+            descriptionLabelL.text = mediaItem.description
+            
+            titleLabelR.text = mediaItem.title
+            titleLabelR.textColor = .white
+            
+            descriptionLabelR.textColor = .white
+            descriptionLabelR.text = mediaItem.description
             
         default:
             break
