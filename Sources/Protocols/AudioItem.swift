@@ -30,7 +30,10 @@ import class AVFoundation.AVAudioPlayer
 public protocol AudioItem {
 
     /// The url where the audio file is located.
-    var url: URL { get }
+    var url: URL? { get }
+    
+    /// The url where the audio file is located.
+    var data: Data? { get }
 
     /// The audio file duration in seconds.
     var duration: Float { get }
