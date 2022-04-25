@@ -67,7 +67,7 @@ open class AudioMessageCell: MessageContentCell {
 
     /// Handle tap gesture on contentView and its subviews.
     open override func handleTapGesture(_ gesture: UIGestureRecognizer) {
-//        let touchLocation = gesture.location(in: self)
+        let touchLocation = gesture.location(in: self)
 //        // compute play button touch area, currently play button size is (25, 25) which is hardly touchable
 //        // add 10 px around current button frame and test the touch against this new frame
 //        let playButtonTouchArea = CGRect(playButton.frame.origin.x - 10.0, playButton.frame.origin.y - 10, playButton.frame.size.width + 20, playButton.frame.size.height + 20)
@@ -77,6 +77,11 @@ open class AudioMessageCell: MessageContentCell {
 //        } else {
 //            super.handleTapGesture(gesture)
 //        }
+        
+        guard messageContainerView.frame.contains(touchLocation) else {
+            super.handleTapGesture(gesture)
+            return
+        }
         delegate?.didTapPlayButton(in: self)
     }
 
